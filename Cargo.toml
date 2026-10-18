@@ -1,0 +1,26 @@
+[package]
+name = "vrc-video-proxy"
+version = "0.1.0"
+edition = "2021"
+authors = ["Lenqth"]
+license = "MIT OR Apache-2.0"
+description = "Drop-in replacement for VRChat's yt-dlp.exe that converts and relays videos for AVPro"
+
+[[bin]]
+# VRChat/Tools/yt-dlp.exe として置くため、ビルド成果物名を yt-dlp.exe にする
+name = "yt-dlp"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+# 動画を中継するための HTTPS クライアント (gzip は Range と相性が悪いので無効)
+ureq = { version = "2", default-features = false, features = ["tls"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
+codegen-units = 1
